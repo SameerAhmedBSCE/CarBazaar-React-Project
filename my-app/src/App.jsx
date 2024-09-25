@@ -1,19 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from "./Pages/HomePage";
 
-function App() {
 
+const App = () => {
   return (
     <>
-
-      <h1>CarBazaar react Project</h1>
-
-      <p className>
-        CarBazaar is an innovative React.js platform designed for buying and selling vehicles effortlessly. This user-friendly application enables registered users to list their old cars for sale and browse an extensive selection of vehicle listings.      </p>
+    
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/sell-car" element={<SellerDashboard />} /> */}
+      
+      </Routes>
+    </Router>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
