@@ -17,14 +17,18 @@ const Navbar = ({ toggleMobileMenu, user, isMobileMenuOpen }) => {
   };
 
   return (
-    <div className="bg-gray-800 text-white flex justify-between items-center p-4">
+    <div className="sticky top-0 z-50 bg-gray-800 text-white flex justify-between items-center p-4 shadow-lg">
       <h2 className="text-xl">CarBazaar</h2>
 
       {/* Show links on large screens */}
       <div className="hidden lg:flex space-x-4">
         <Link to="/" className="hover:bg-gray-700 p-2 rounded">Home</Link>
-        <Link to="/register" className="hover:bg-gray-700 p-2 rounded">Register</Link>
-        <Link to="/login" className="hover:bg-gray-700 p-2 rounded">Login</Link>
+        {!user && (
+          <>
+            <Link to="/register" className="hover:bg-gray-700 p-2 rounded">Register</Link>
+            <Link to="/login" className="hover:bg-gray-700 p-2 rounded">Login</Link>
+          </>
+        )}
         {user && (
           <>
             <Link to="/dashboard" className="hover:bg-gray-700 p-2 rounded">Dashboard</Link>
@@ -44,8 +48,12 @@ const Navbar = ({ toggleMobileMenu, user, isMobileMenuOpen }) => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-gray-800 text-white p-4 flex flex-col absolute top-16 left-0 right-0">
           <Link to="/" className="block text-white hover:bg-gray-700 p-2 rounded">Home</Link>
-          <Link to="/register" className="block text-white hover:bg-gray-700 p-2 rounded">Register</Link>
-          <Link to="/login" className="block text-white hover:bg-gray-700 p-2 rounded">Login</Link>
+          {!user && (
+            <>
+              <Link to="/register" className="block text-white hover:bg-gray-700 p-2 rounded">Register</Link>
+              <Link to="/login" className="block text-white hover:bg-gray-700 p-2 rounded">Login</Link>
+            </>
+          )}
           {user && (
             <>
               <Link to="/dashboard" className="block text-white hover:bg-gray-700 p-2 rounded">Dashboard</Link>
