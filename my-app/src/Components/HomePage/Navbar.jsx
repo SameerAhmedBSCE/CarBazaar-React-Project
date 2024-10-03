@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import logo from '../assets/logo.png'; 
+import logo from '../../assets/LOGO.png'; 
 
 const websiteLogo = logo;
 
@@ -19,7 +19,7 @@ const Navbar = () => {
         Home
       </NavLink>
       <NavLink 
-        to="/listings" 
+        to="/alllistings" 
         className={({ isActive }) => 
           isActive 
             ? "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-300" 

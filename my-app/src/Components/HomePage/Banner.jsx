@@ -86,7 +86,7 @@ const Banner = () => {
 
 
                     <button type="submit" className='bg-sub text-white p-2 w-full md:w-fit md:p-4 lg:p-5 rounded-lg md:rounded-[100%] font-bold hover:bg-white hover:text-sub duration-500 flex justify-center items-center'>
-                        <FaSearch className='text-xl' />
+                    <FaSearch className='text-blue-500 text-3xl' />
                     </button>
                 </form>
 

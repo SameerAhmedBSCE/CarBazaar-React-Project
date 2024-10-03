@@ -1,12 +1,13 @@
-// src/Pages/HomePage.jsx
-
 import React from 'react';
-
+import Banner from '../Components/HomePage/Banner'
+import UserCards from '../Components/HomePage/UserCards'
+import AboutContent from '../Components/HomePage/AboutContent'
 const HomePage = () => {
   return (
     <div>
-      <h1>Welcome to CarBazaar</h1>
-      <p>Find your next vehicle from thousands of listings, or sell your own car with ease!</p>
+      <Banner/>
+      <UserCards/>
+      <AboutContent/>
     </div>
   );
 };

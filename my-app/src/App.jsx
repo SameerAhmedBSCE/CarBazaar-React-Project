@@ -6,10 +6,10 @@ import HomePage from "./Pages/HomePage";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import SellerDashboard from "./Pages/SellerDashboard";
-import Navbar from './Components/Navbar';
+import Navbar from './Components/HomePage/Navbar';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-
+import AllListingPage from "./Pages/AllListingPage";
 const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -32,7 +32,7 @@ const App = () => {
         <Navbar 
           toggleMobileMenu={toggleMobileMenu} 
           user={user} 
-          isMobileMenuOpen={isMobileMenuOpen} // Pass the state for mobile menu
+          isMobileMenuOpen={isMobileMenuOpen} 
         />
 
         <main className="p-4">
@@ -41,6 +41,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<SellerDashboard />} />
+            <Route path="/alllistings" element={<AllListingPage />} />
           </Routes>
         </main>
       </div>
