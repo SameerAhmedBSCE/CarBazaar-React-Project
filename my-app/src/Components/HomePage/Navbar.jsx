@@ -55,7 +55,7 @@ const Navbar = ({ user, onLogout }) => { // Accept onLogout prop
           </NavLink>
           <button 
             onClick={onLogout} // Call onLogout function when clicked
-            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 duration-300"
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-red-700 duration-300"
           >
             Logout
           </button>
@@ -77,7 +77,7 @@ const Navbar = ({ user, onLogout }) => { // Accept onLogout prop
             to="/login" 
             className={({ isActive }) => 
               isActive 
-                ? "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-300" 
+                ? "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-green-600 duration-300" 
                 : "single-nav-menu"
             }
           >

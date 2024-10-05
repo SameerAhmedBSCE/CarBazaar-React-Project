@@ -6,9 +6,10 @@ import Register from "./Pages/Register";
 import SellerDashboard from "./Pages/SellerDashboard";
 import Navbar from './Components/HomePage/Navbar';
 import { auth } from './firebaseConfig';
-import { onAuthStateChanged, signOut } from 'firebase/auth'; // Import signOut
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import AllListingPage from "./Pages/AllListingPage";
-import Footer from './Components/Footer'; // Import the Footer component
+import SellYourCar from './Pages/SellYourCar'; // Import the new component
+import Footer from './Components/Footer'; 
 
 const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,11 +19,10 @@ const App = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Function to handle logout
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Sign out from Firebase
-      setUser(null); // Update user state
+      await signOut(auth);
+      setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -38,24 +38,25 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen"> {/* Make the container take at least the full height of the screen */}
+      <div className="flex flex-col min-h-screen">
         <Navbar 
           toggleMobileMenu={toggleMobileMenu} 
           user={user} 
-          onLogout={handleLogout} // Pass the handleLogout function
+          onLogout={handleLogout} 
         />
 
-        <main className="flex-grow p-4"> {/* Allow main to grow and fill space */}
+        <main className="flex-grow p-4">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<SellerDashboard />} />
             <Route path="/alllistings" element={<AllListingPage />} />
+            <Route path="/sell-car" element={<SellYourCar />} /> {/* Add this line */}
           </Routes>
         </main>
 
-        <Footer /> {/* Include the Footer here */}
+        <Footer />
       </div>
     </Router>
   );
