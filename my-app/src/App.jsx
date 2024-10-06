@@ -8,8 +8,10 @@ import Navbar from './Components/HomePage/Navbar';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import AllListingPage from "./Pages/AllListingPage";
-import SellYourCar from './Pages/SellYourCar'; // Import the new component
+import SellYourCar from './Pages/SellYourCar'; 
+import SeeDetailsPage from './Pages/SeeDetailsPage';
 import Footer from './Components/Footer'; 
+import CarCard from './Components/CarListingPage/CarCard';
 
 const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -53,6 +55,7 @@ const App = () => {
             <Route path="/dashboard" element={<SellerDashboard />} />
             <Route path="/alllistings" element={<AllListingPage />} />
             <Route path="/sell-car" element={<SellYourCar />} /> {/* Add this line */}
+            <Route path="/details/:id" element={<SeeDetailsPage />} />
           </Routes>
         </main>
 

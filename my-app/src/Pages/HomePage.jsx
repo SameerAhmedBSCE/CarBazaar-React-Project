@@ -8,6 +8,7 @@ const HomePage = () => {
       <Banner/>
       <UserCards/>
       <AboutContent/>
+      
     </div>
   );
 };
