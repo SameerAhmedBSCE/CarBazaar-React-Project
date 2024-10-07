@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../../assets/LOGO.png';
 
-const Navbar = ({ user, onLogout }) => { // Accept onLogout prop
+const Navbar = ({ user, onLogout }) => { 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -41,7 +41,7 @@ const Navbar = ({ user, onLogout }) => { // Accept onLogout prop
       >
         Sell Your Car
       </NavLink>
-      {user && ( // Conditional rendering based on user authentication
+      {user && ( 
         <>
           <NavLink 
             to="/dashboard" 
@@ -54,7 +54,7 @@ const Navbar = ({ user, onLogout }) => { // Accept onLogout prop
             Dashboard
           </NavLink>
           <button 
-            onClick={onLogout} // Call onLogout function when clicked
+            onClick={onLogout} 
             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-red-700 duration-300"
           >
             Logout
