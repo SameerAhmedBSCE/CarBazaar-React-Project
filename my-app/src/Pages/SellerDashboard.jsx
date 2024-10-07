@@ -1,5 +1,3 @@
-// src/Pages/SellerDashboard.jsx
-
 import React, { useEffect, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
@@ -11,18 +9,20 @@ const SellerDashboard = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [formValues, setFormValues] = useState({
     title: '',
-    brand: '',
-    model: '',
-    year: '',
-    price: '',
-    condition: '',
     description: '',
-    imageUrl: ''
+    imageUrl: '',
+    price: '',
+    totalRun: '',
+    fuelType: '',
+    transmissionType: '',
+    sellerName: '',
+    sellerPhone: '',
+    sellerPhoto: '',
   });
+  const [imageModal, setImageModal] = useState({ imageUrl: '', title: '' });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get the current user information
     const currentUser = auth.currentUser;
     if (currentUser) {
       setUser({
@@ -36,7 +36,6 @@ const SellerDashboard = () => {
     }
   }, [navigate]);
 
-  // Retrieve car listings from local storage
   useEffect(() => {
     const storedListings = JSON.parse(localStorage.getItem('carListings')) || [];
     setListings(storedListings);
@@ -54,14 +53,6 @@ const SellerDashboard = () => {
 
   const handleDelete = (index) => {
     const updatedListings = listings.filter((_, i) => i !== index);
-    setListings(updatedListings);
-    localStorage.setItem('carListings', JSON.stringify(updatedListings));
-  };
-
-  const handleSold = (index) => {
-    const updatedListings = listings.map((listing, i) =>
-      i === index ? { ...listing, status: 'Sold' } : listing
-    );
     setListings(updatedListings);
     localStorage.setItem('carListings', JSON.stringify(updatedListings));
   };
@@ -89,23 +80,27 @@ const SellerDashboard = () => {
     setEditIndex(null);
     setFormValues({
       title: '',
-      brand: '',
-      model: '',
-      year: '',
-      price: '',
-      condition: '',
       description: '',
-      imageUrl: ''
+      imageUrl: '',
+      price: '',
+      totalRun: '',
+      fuelType: '',
+      transmissionType: '',
+      sellerName: '',
+      sellerPhone: '',
+      sellerPhoto: '',
     });
   };
 
+  const closeModal = () => setImageModal({ imageUrl: '', title: '' });
+
   return (
-    <div className="flex min-h-screen bg-gray-50 rounded-xl">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 rounded-xl">
       {/* Left Section */}
-      <div className="w-1/4 bg-gray-800 text-white p-6 shadow-lg rounded-xl">
-        <h2 className="text-2xl mb-4">User Information</h2>
+      <div className="w-full md:w-1/4 bg-gray-800 text-white p-4 md:p-6 shadow-lg rounded-xl mb-6 md:mb-0">
+        <h2 className="text-xl md:text-2xl mb-4">User Information</h2>
         {user && (
-          <div className="mb-4">
+          <div className="mb-4 text-sm md:text-base">
             <p><strong>Name:</strong> {user.name}</p>
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Phone:</strong> {user.phone}</p>
@@ -121,22 +116,21 @@ const SellerDashboard = () => {
       </div>
 
       {/* Right Section */}
-      <div className="flex-grow p-6">
-        <h2 className="text-2xl mb-4">My Listings</h2>
+      <div className="flex-grow p-4 md:p-6">
+        <h2 className="text-xl md:text-2xl mb-4">My Listings</h2>
 
         {/* Listings Table */}
         <div className="overflow-auto rounded-lg shadow-lg">
-          <table className="min-w-full border-collapse border border-gray-300 bg-white">
+          <table className="hidden sm:table min-w-full border-collapse border border-gray-300 bg-white text-sm md:text-base">
             <thead>
               <tr className="bg-gray-200">
                 <th className="border border-gray-300 p-2">Car Image</th>
                 <th className="border border-gray-300 p-2">Car Title</th>
-                <th className="border border-gray-300 p-2">Brand</th>
-                <th className="border border-gray-300 p-2">Model</th>
-                <th className="border border-gray-300 p-2">Year</th>
                 <th className="border border-gray-300 p-2">Price</th>
-                <th className="border border-gray-300 p-2">Condition</th>
-                <th className="border border-gray-300 p-2">Description</th>
+                <th className="border border-gray-300 p-2">Total Run</th>
+                <th className="border border-gray-300 p-2">Fuel Type</th>
+                <th className="border border-gray-300 p-2">Transmission Type</th>
+                <th className="border border-gray-300 p-2">Seller Name</th>
                 <th className="border border-gray-300 p-2">Actions</th>
               </tr>
             </thead>
@@ -145,50 +139,85 @@ const SellerDashboard = () => {
                 listings.map((listing, index) => (
                   <tr key={index} className="hover:bg-gray-100">
                     <td className="border border-gray-300 p-2">
-                      <img src={listing.imageUrl} alt={listing.title} className="h-20 w-20 object-cover" />
+                      <img src={listing.imageUrl} alt={listing.title} className="h-16 w-16 md:h-20 md:w-20 object-cover cursor-pointer" onClick={() => setImageModal({ imageUrl: listing.imageUrl, title: listing.title })} />
                     </td>
                     <td className="border border-gray-300 p-2">{listing.title}</td>
-                    <td className="border border-gray-300 p-2">{listing.brand}</td>
-                    <td className="border border-gray-300 p-2">{listing.model}</td>
-                    <td className="border border-gray-300 p-2">{listing.year}</td>
-                    <td className="border border-gray-300 p-2">{listing.price}</td>
-                    <td className="border border-gray-300 p-2">{listing.condition}</td>
-                    <td className="border border-gray-300 p-2">{listing.description}</td>
-                    <td className="border border-gray-300 p-2">
-                      <button className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition" onClick={() => handleEdit(index)}>Edit</button>
-                      <button className="bg-red-500 text-white px-2 py-1 rounded ml-2 hover:bg-red-600 transition" onClick={() => handleDelete(index)}>Delete</button>
+                    <td className="border border-gray-300 p-2">${listing.price}</td>
+                    <td className="border border-gray-300 p-2">{listing.totalRun}</td>
+                    <td className="border border-gray-300 p-2">{listing.fuelType}</td>
+                    <td className="border border-gray-300 p-2">{listing.transmissionType}</td>
+                    <td className="border border-gray-300 p-2">{listing.sellerName}</td>
+                    <td className="border border-gray-300 p-2 flex flex-col md:flex-row">
+                      <button className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition mb-2 md:mb-0 md:mr-2" onClick={() => handleEdit(index)}>Edit</button>
+                      <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition" onClick={() => handleDelete(index)}>Delete</button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9" className="text-center p-4">No listings found.</td>
+                  <td colSpan="8" className="text-center p-4">No listings found.</td>
                 </tr>
               )}
             </tbody>
           </table>
+
+          {/* Mobile Responsive List */}
+          <div className="sm:hidden">
+            {listings.length > 0 ? (
+              listings.map((listing, index) => (
+                <div key={index} className="flex flex-col bg-white mb-4 p-4 border border-gray-300 rounded-lg shadow-lg">
+                  <img src={listing.imageUrl} alt={listing.title} className="h-32 w-full object-cover rounded-lg cursor-pointer mb-4" onClick={() => setImageModal({ imageUrl: listing.imageUrl, title: listing.title })} />
+                  <div>
+                    <p className="text-lg font-semibold">{listing.title}</p>
+                    <p><strong>Price:</strong> ${listing.price}</p>
+                    <p><strong>Total Run:</strong> {listing.totalRun}</p>
+                    <p><strong>Fuel Type:</strong> {listing.fuelType}</p>
+                    <p><strong>Transmission Type:</strong> {listing.transmissionType}</p>
+                    <p><strong>Seller Name:</strong> {listing.sellerName}</p>
+                  </div>
+                  <div className="flex justify-between mt-4">
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition" onClick={() => handleEdit(index)}>Edit</button>
+                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition" onClick={() => handleDelete(index)}>Delete</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center">No listings found.</p>
+            )}
+          </div>
         </div>
 
-        {/* Add New Car Button */}
-        <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition" onClick={() => setEditIndex(-1)}>
-          Add New Car
-        </button>
-
-        {/* Edit / Add Car Form */}
+        {/* Add/Edit Car Form (Only show if editIndex is not null) */}
         {editIndex !== null && (
-          <form onSubmit={handleFormSubmit} className="mt-4 bg-gray-100 p-4 rounded">
-            <h3 className="text-lg font-bold">{editIndex === -1 ? 'Add New Car' : 'Edit Car'}</h3>
-            <input type="text" name="title" placeholder="Title" value={formValues.title} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="text" name="brand" placeholder="Brand" value={formValues.brand} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="text" name="model" placeholder="Model" value={formValues.model} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="number" name="year" placeholder="Year" value={formValues.year} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="text" name="price" placeholder="Price" value={formValues.price} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="text" name="condition" placeholder="Condition" value={formValues.condition} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <textarea name="description" placeholder="Description" value={formValues.description} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <input type="text" name="imageUrl" placeholder="Image URL" value={formValues.imageUrl} onChange={handleFormChange} className="block w-full border border-gray-300 rounded mb-2 p-2" required />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">{editIndex === -1 ? 'Add Car' : 'Update Car'}</button>
-            <button type="button" className="ml-2 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition" onClick={() => setEditIndex(null)}>Cancel</button>
+          <form onSubmit={handleFormSubmit} className="mt-6 bg-gray-200 p-4 rounded-lg shadow-md">
+            <h3 className="text-lg mb-4">Edit Car Listing</h3>
+            {Object.keys(formValues).map((key) => (
+              <div key={key} className="mb-4">
+                <label className="block mb-1" htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                <input
+                  type="text"
+                  id={key}
+                  name={key}
+                  value={formValues[key]}
+                  onChange={handleFormChange}
+                  className="w-full border border-gray-300 p-2 rounded"
+                  required
+                />
+              </div>
+            ))}
+            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Update Listing</button>
           </form>
+        )}
+
+        {/* Image Modal */}
+        {imageModal.imageUrl && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-4">
+              <h2 className="text-xl mb-2">{imageModal.title}</h2>
+              <img src={imageModal.imageUrl} alt={imageModal.title} className="max-w-full h-auto" />
+              <button onClick={closeModal} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">Close</button>
+            </div>
+          </div>
         )}
       </div>
     </div>
