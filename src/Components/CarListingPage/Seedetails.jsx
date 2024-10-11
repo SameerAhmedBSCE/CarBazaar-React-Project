@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { carData } from './CarData'; 
+import { carData } from './CarData'; // This will remain for initial data if needed.
 import { FaUser, FaPhone } from 'react-icons/fa';
 import { SiAdguard } from 'react-icons/si';
 import { IoSpeedometerOutline } from 'react-icons/io5';  
@@ -14,13 +14,16 @@ const SeeDetails = () => {
   const [showNumber, setShowNumber] = useState(false);
 
   useEffect(() => {
-    const selectedCar = carData.find(car => car.id === parseInt(id));
+    // Fetching both static data and local storage data
+    const storedCars = JSON.parse(localStorage.getItem('carListings')) || [];
+    const allCars = [...carData, ...storedCars]; // Combine both carData and stored listings
+
+    const selectedCar = allCars.find(car => car.id === parseInt(id));
     if (selectedCar) setCar(selectedCar);
   }, [id]);
 
-  if (!car) return <div>Loading...</div>; 
+  if (!car) return <div>Loading...</div>;
 
-  
   const addingDate = car.addingDate || '6/10/2024';
   const condition = car.condition || 'New';
 
@@ -30,7 +33,7 @@ const SeeDetails = () => {
       <div className="flex flex-col md:flex-row justify-center items-start gap-14 w-full lg:w-6/6 mt-[80px]">
         {/* Product Image */}
         <div className="w-full md:w-1/2 flex justify-center items-center flex-col">
-          <img src={car.image} alt={car.title} className="w-full h-64 object-cover mb-4" />
+          <img src={car.imageUrl} alt={car.title} className="w-full h-64 object-cover mb-4" />
           <div className="flex justify-center items-center gap-3 mt-3">
             <p className="bg-gray text-black px-3 py-1 rounded-[4px] w-fit">{car.brand}</p>
             <p className="bg-gray text-black px-3 py-1 rounded-[4px] w-fit">{car.type}</p>

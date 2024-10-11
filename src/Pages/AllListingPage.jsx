@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import CarCard from '../Components/CarListingPage/CarCard';
-import { carData } from '../Components/CarListingPage/CarData';
+import { carData as initialCarData } from '../Components/CarListingPage/CarData';
 
 const AllListing = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
- 
-    setCars(carData);
+    // Get any data stored in localStorage
+    const localStorageCars = JSON.parse(localStorage.getItem('carListings')) || [];
+
+    // Combine the initial car data with data from localStorage
+    const combinedCars = [...initialCarData, ...localStorageCars];
+
+    // Remove duplicates based on car ID
+    const uniqueCars = combinedCars.reduce((acc, current) => {
+      const duplicate = acc.find(car => car.id === current.id);
+      if (!duplicate) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+
+    setCars(uniqueCars);
   }, []);
 
   return (

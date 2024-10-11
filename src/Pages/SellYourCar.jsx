@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { carData as initialCarData } from '../Components/CarListingPage/CarData';
 
 const SellYourCar = () => {
   const [carDetails, setCarDetails] = useState({
@@ -14,6 +15,19 @@ const SellYourCar = () => {
     sellerPhoto: ''
   });
 
+  const [carData, setCarData] = useState([]);
+
+  useEffect(() => {
+    // Check if data already exists in localStorage; otherwise, initialize with carData
+    const existingListings = JSON.parse(localStorage.getItem('carListings'));
+    if (existingListings && existingListings.length > 0) {
+      setCarData(existingListings);
+    } else {
+      setCarData(initialCarData);
+      localStorage.setItem('carListings', JSON.stringify(initialCarData));
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCarDetails({
@@ -24,11 +38,21 @@ const SellYourCar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Store car details in local storage
-    const existingListings = JSON.parse(localStorage.getItem('carListings')) || [];
-    existingListings.push(carDetails);
-    localStorage.setItem('carListings', JSON.stringify(existingListings));
-    
+
+    // Determine the new ID, starting from the next available
+    const nextId = carData.length > 0 
+      ? Math.max(...carData.map(car => car.id)) + 1 
+      : 13;
+
+    const newCar = {
+      ...carDetails,
+      id: nextId
+    };
+
+    const updatedListings = [...carData, newCar];
+    localStorage.setItem('carListings', JSON.stringify(updatedListings));
+    setCarData(updatedListings);
+
     // Reset form after submission
     setCarDetails({
       title: '',
@@ -106,6 +130,7 @@ const SellYourCar = () => {
             <option value="Diesel">Diesel</option>
             <option value="Petrol">Petrol</option>
             <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
           </select>
           <select 
             name="transmissionType" 
@@ -148,7 +173,7 @@ const SellYourCar = () => {
           />
         </div>
         <button type="submit" className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
-          Submit
+          Submit Car Details
         </button>
       </form>
     </div>

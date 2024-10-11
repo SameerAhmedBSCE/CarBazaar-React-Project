@@ -9,7 +9,7 @@ const CarCard = ({ car }) => {
   return (
     <div className="bg-gray-100 border border-gray-300 rounded-lg w-95 m-5 shadow-md transition-transform transform hover:scale-105">
       {/* Car Image */}
-      <img src={car.image} alt={car.title} className="w-full h-48 object-cover rounded-t-lg" />
+      <img src={car.imageUrl} alt={car.title} className="w-full h-48 object-cover rounded-t-lg" />
       
       {/* Car Details */}
       <div className="p-4">

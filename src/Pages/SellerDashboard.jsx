@@ -18,6 +18,7 @@ const SellerDashboard = () => {
     sellerName: '',
     sellerPhone: '',
     sellerPhoto: '',
+    sellerEmail: '', // Add seller email to the form values
   });
   const [imageModal, setImageModal] = useState({ imageUrl: '', title: '' });
   const navigate = useNavigate();
@@ -38,8 +39,12 @@ const SellerDashboard = () => {
 
   useEffect(() => {
     const storedListings = JSON.parse(localStorage.getItem('carListings')) || [];
-    setListings(storedListings);
-  }, []);
+    // Filter listings based on the current user's email
+    const userSpecificListings = storedListings.filter(
+      (listing) => listing.sellerEmail === user?.email
+    );
+    setListings(userSpecificListings);
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -89,6 +94,7 @@ const SellerDashboard = () => {
       sellerName: '',
       sellerPhone: '',
       sellerPhoto: '',
+      sellerEmail: '', // Reset seller email
     });
   };
 
