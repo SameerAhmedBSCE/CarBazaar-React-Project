@@ -82,10 +82,10 @@ const Footer = () => {
 
           {/* View Code Section */}
           <div className="flex justify-center items-center">
-            <p className="mr-2 text-gray-900 font-medium">View Code:</p>
+            <p className="mr-2 text-gray-900 font-medium"></p>
             <a
               className="text-gray-700 hover:text-gray-900 transition duration-300"
-              href="https://github.com/SameerAhmedBSCE/CarBazaar-React-Project"
+              href=""
               target="_blank"
               rel="noreferrer"
             >
